@@ -1,0 +1,29 @@
+From 21d7bb90cbcb1ab71c3d7e660948b92bbf85e5f6 Mon Sep 17 00:00:00 2001
+From: zhanghaibo <ted.zhang@huawei.com>
+Date: Wed, 11 Dec 2019 03:02:27 +0000
+Subject: [PATCH] supermin:fix cannot detect package manager on openeuler
+
+---
+ src/ph_rpm.ml | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/ph_rpm.ml b/src/ph_rpm.ml
+index b0a5eb2..61537ce 100644
+--- a/src/ph_rpm.ml
++++ b/src/ph_rpm.ml
+@@ -31,10 +31,11 @@ let stringset_of_list pkgs =
+ let fedora_detect () =
+   Config.rpm <> "no" && Config.rpm2cpio <> "no" && rpm_is_available () &&
+     (Config.yumdownloader <> "no" || Config.dnf <> "no") &&
+-    (List.mem (Os_release.get_id ()) [ "fedora"; "rhel"; "centos" ] ||
++    (List.mem (Os_release.get_id ()) [ "fedora"; "rhel"; "centos"; "openEuler" ] ||
+      try
+        (stat "/etc/redhat-release").st_kind = S_REG ||
+-       (stat "/etc/fedora-release").st_kind = S_REG
++       (stat "/etc/fedora-release").st_kind = S_REG ||
++       (stat "/etc/openEuler-release").st_kind = S_REG
+      with Unix_error _ -> false)
+ 
+ let opensuse_detect () =
+-- 
+2.23.0
