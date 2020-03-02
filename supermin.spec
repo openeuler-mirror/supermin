@@ -1,10 +1,12 @@
 Name:           supermin
 Version:        5.1.19
-Release:        9
+Release:        10
 Summary:        A tool for building supermin appliances, required by libguestfs
 License:        GPLv2+
 URL:            http://libguestfs.org/
 Source0:        http://libguestfs.org/download/supermin/%{name}-%{version}.tar.gz
+Source1:        supermin.attr
+Source2:        supermin-find-requires
 Patch0001:      0001-Fix-Bytes-String-for-OCaml-4.06.patch
 Patch9000:      9000-fix-cannot-detect-package-manager-on-openeuler.patch
 BuildRequires:  augeas dietlibc-devel dnf dnf-plugins-core e2fsprogs-devel
@@ -20,12 +22,20 @@ appliances (similar to virtual machines), usually around 100KB in
 size, which get fully instantiated on-the-fly in a fraction of a
 second when you need to boot one of them.
 
+%package        devel
+Summary:        Development tools for supermin
+Requires:       supermin = %{version}-%{release}
+Requires:       rpm-build
+
+%description    devel
+supermin-devel contains development tools for supermin.
+
 %package        help
 Summary:        Man files for supermin
 Requires:       man
 BuildArch:      noarch
 
-%description help
+%description    help
 This contains man files for the using of supermin.
 
 %prep
@@ -39,24 +49,25 @@ make -C init CC="diet gcc"
 %install
 %make_install
 
-%check
-#%ifarch aarch64
-#export SKIP_TEST_EXECSTACK=1
-#%endif
-
-#make check || {
-#    cat tests/test-suite.log
-#    exit 1
-#}
+mkdir -p $RPM_BUILD_ROOT%{_rpmconfigdir}/fileattrs/
+install -m 0644 %{SOURCE1} $RPM_BUILD_ROOT%{_rpmconfigdir}/fileattrs/
+install -m 0755 %{SOURCE2} $RPM_BUILD_ROOT%{_rpmconfigdir}/
 
 %files
 %doc examples/build-basic-vm.sh README
 %license COPYING
 %{_bindir}/*
 
+%files devel
+%{_rpmconfigdir}/fileattrs/supermin.attr
+%{_rpmconfigdir}/supermin-find-requires
+
 %files help
 %{_mandir}/man1/*
 
 %changelog
+* Mon Mar 2 2020 Ling Yang <lingyang2@huawei.com> - 5.1.19-10
+- Add devel package
+
 * Fri Feb 14 2020 Ling Yang <lingyang2@huawei.com> - 5.1.19-9
 - Package Initialization
