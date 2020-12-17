@@ -1,6 +1,6 @@
 Name:           supermin
 Version:        5.1.19
-Release:        10
+Release:        11
 Summary:        A tool for building supermin appliances, required by libguestfs
 License:        GPLv2+
 URL:            http://libguestfs.org/
@@ -8,6 +8,7 @@ Source0:        http://libguestfs.org/download/supermin/%{name}-%{version}.tar.g
 Source1:        supermin.attr
 Source2:        supermin-find-requires
 Patch0001:      0001-Fix-Bytes-String-for-OCaml-4.06.patch
+Patch0002:      0002-use-installed-packages-instead-of-dnf-downloading.patch
 Patch9000:      9000-fix-cannot-detect-package-manager-on-openeuler.patch
 BuildRequires:  augeas dietlibc-devel dnf dnf-plugins-core e2fsprogs-devel
 BuildRequires:  findutils gnupg2 grubby hivex kernel ocaml ocaml-findlib-devel
@@ -66,6 +67,9 @@ install -m 0755 %{SOURCE2} $RPM_BUILD_ROOT%{_rpmconfigdir}/
 %{_mandir}/man1/*
 
 %changelog
+* Wed Dec 16 2020 maminjie <maminjie1@huawei.com> - 5.1.19-11
+- Use installed packages instead of dnf downloading
+
 * Mon Mar 2 2020 Ling Yang <lingyang2@huawei.com> - 5.1.19-10
 - Add devel package
 
