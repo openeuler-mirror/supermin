@@ -1,6 +1,6 @@
 Name:           supermin
 Version:        5.1.19
-Release:        11
+Release:        12
 Summary:        A tool for building supermin appliances, required by libguestfs
 License:        GPLv2+
 URL:            http://libguestfs.org/
@@ -43,6 +43,7 @@ This contains man files for the using of supermin.
 %autosetup -p1
 
 %build
+CFLAGS="-fPIE $RPM_OPT_FLAGS"
 %configure --disable-network-tests
 make -C init CC="diet gcc"
 %make_build
@@ -67,6 +68,9 @@ install -m 0755 %{SOURCE2} $RPM_BUILD_ROOT%{_rpmconfigdir}/
 %{_mandir}/man1/*
 
 %changelog
+* Sat Mar 20 2021 wutao <wutao61@huawei.com> - 5.1.19-12
+- add fPIE flags
+
 * Wed Dec 16 2020 maminjie <maminjie1@huawei.com> - 5.1.19-11
 - Use installed packages instead of dnf downloading
 
