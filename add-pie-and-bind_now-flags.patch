@@ -1,0 +1,25 @@
+From 678155eaeafa82ebdbebeed7567d54558c22538e Mon Sep 17 00:00:00 2001
+From: wang_yue111 <648774160@qq.com>
+Date: Wed, 8 Sep 2021 16:05:12 +0800
+Subject: [PATCH] Add pie and bind_now flags
+
+---
+ src/Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 09e1d08..5f8b34a 100644
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -1077,7 +1077,7 @@ supermin_LDADD = ../lib/libgnu.a
+ supermin_LINK = \
+ 	./supermin-link.sh \
+ 	  $(OCAMLFIND) $(BEST) $(OCAMLFLAGS) $(OCAMLPACKAGES) \
+-	  $(OBJECTS) -o $@
++	  $(OBJECTS) -cclib "-pie -Wl,-z,now" -o $@
+ 
+ BUILT_SOURCES = format-ext2-init-bin.h
+ SUFFIXES = .cmo .cmi .cmx .ml .mli .mll .mly
+-- 
+2.23.0
+
