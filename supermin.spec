@@ -1,6 +1,6 @@
 Name:           supermin
 Version:        5.1.19
-Release:        12
+Release:        13
 Summary:        A tool for building supermin appliances, required by libguestfs
 License:        GPLv2+
 URL:            http://libguestfs.org/
@@ -12,7 +12,7 @@ Patch0002:      0002-use-installed-packages-instead-of-dnf-downloading.patch
 Patch9000:      9000-fix-cannot-detect-package-manager-on-openeuler.patch
 Patch9001:      add-pie-and-bind_now-flags.patch
 BuildRequires:  augeas dietlibc-devel dnf dnf-plugins-core e2fsprogs-devel
-BuildRequires:  findutils gnupg2 grubby hivex kernel ocaml ocaml-findlib-devel
+BuildRequires:  findutils gnupg2 grubby hivex ocaml ocaml-findlib-devel
 BuildRequires:  rpm rpm-devel systemd-udev tar
 BuildRequires:  /usr/bin/pod2man /usr/bin/pod2html /usr/sbin/mke2fs
 Requires:       cpio dnf dnf-plugins-core e2fsprogs-libs >= 1.42 findutils
@@ -68,6 +68,9 @@ install -m 0755 %{SOURCE2} $RPM_BUILD_ROOT%{_rpmconfigdir}/
 %{_mandir}/man1/*
 
 %changelog
+* Thu May 26 2022 Jun Yang <jun.yang@suse.com> - 5.1.19-13
+- Remove dependency of kernel package
+
 * Wed Sep 08 2021 wangyue <wangyue92@huawei.com> - 5.1.19-12
 - Add pie and bind_now flags
 
