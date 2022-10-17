@@ -1,15 +1,13 @@
 Name:           supermin
-Version:        5.1.19
-Release:        14
+Version:        5.3.2
+Release:        1
 Summary:        A tool for building supermin appliances, required by libguestfs
 License:        GPLv2+
 URL:            http://libguestfs.org/
-Source0:        http://libguestfs.org/download/supermin/%{name}-%{version}.tar.gz
+Source0:        http://libguestfs.org/download/supermin/5.3-development/%{name}-%{version}.tar.gz
 Source1:        supermin.attr
 Source2:        supermin-find-requires
-Patch0001:      0001-Fix-Bytes-String-for-OCaml-4.06.patch
 Patch0002:      0002-use-installed-packages-instead-of-dnf-downloading.patch
-Patch9000:      9000-fix-cannot-detect-package-manager-on-openeuler.patch
 Patch9001:      add-pie-and-bind_now-flags.patch
 Patch9002:      9002-fix-cannot-detect-package-manager-on-UnionTech.patch
 
@@ -70,6 +68,9 @@ install -m 0755 %{SOURCE2} $RPM_BUILD_ROOT%{_rpmconfigdir}/
 %{_mandir}/man1/*
 
 %changelog
+* Thu Sep 22 2022 chendexi<chendexi@kylinos.cn> -5.3.2-1
+- Update to version 5.3.2
+
 * Thu May 26 2022 Jun Yang <jun.yang@suse.com> - 5.1.19-14
 - Remove dependency of kernel package
 
