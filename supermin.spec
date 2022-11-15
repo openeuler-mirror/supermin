@@ -1,6 +1,6 @@
 Name:           supermin
 Version:        5.1.19
-Release:        14
+Release:        15
 Summary:        A tool for building supermin appliances, required by libguestfs
 License:        GPLv2+
 URL:            http://libguestfs.org/
@@ -13,6 +13,7 @@ Patch0003:      Build-symbolic-links-correctly.patch
 Patch0004:      Expand-directory-when-adding-symlinks.patch
 Patch9000:      9000-fix-cannot-detect-package-manager-on-openeuler.patch
 Patch9001:      add-pie-and-bind_now-flags.patch
+Patch9002:      fix-cannot-detect-package-manager-on-hce.patch
 BuildRequires:  augeas dietlibc-devel dnf dnf-plugins-core e2fsprogs-devel
 BuildRequires:  findutils gnupg2 grubby hivex ocaml ocaml-findlib-devel
 BuildRequires:  rpm rpm-devel systemd-udev tar
@@ -70,6 +71,9 @@ install -m 0755 %{SOURCE2} $RPM_BUILD_ROOT%{_rpmconfigdir}/
 %{_mandir}/man1/*
 
 %changelog
+* Tue Nov 15 2022 xu_ping <xuping33@h-partners.com> - 5.1.19-15
+- fix cannot detect package manager on hce
+
 * Mon Nov 14 2022 xu_ping <xuping33@h-partners.com> - 5.1.19-14
 - fix ext2: copying kernel modules error
 
