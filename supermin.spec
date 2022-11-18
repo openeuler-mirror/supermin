@@ -1,6 +1,8 @@
+%global vendor %{?_vendor:%{_vendor}}%{!?_vendor:openEuler}
+
 Name:           supermin
 Version:        5.1.19
-Release:        12
+Release:        13
 Summary:        A tool for building supermin appliances, required by libguestfs
 License:        GPLv2+
 URL:            http://libguestfs.org/
@@ -9,7 +11,7 @@ Source1:        supermin.attr
 Source2:        supermin-find-requires
 Patch0001:      0001-Fix-Bytes-String-for-OCaml-4.06.patch
 Patch0002:      0002-use-installed-packages-instead-of-dnf-downloading.patch
-Patch9000:      9000-fix-cannot-detect-package-manager-on-openeuler.patch
+Patch9000:      9000-fix-cannot-detect-package-manager.patch
 Patch9001:      add-pie-and-bind_now-flags.patch
 BuildRequires:  augeas dietlibc-devel dnf dnf-plugins-core e2fsprogs-devel
 BuildRequires:  findutils gnupg2 grubby hivex kernel ocaml ocaml-findlib-devel
@@ -43,6 +45,12 @@ This contains man files for the using of supermin.
 %prep
 %autosetup -p1
 
+%if %{!?openEuler:1}0
+sed -i 's/; "openEuler"/&; "%{vendor}"/' ./src/ph_rpm.ml
+num=$(grep  -n  "etc/openEuler-release" ./src/ph_rpm.ml |awk -F ":" '{printf $1}')
+sed -i "N;$num i\       (stat \"/etc/%{vendor}-release\").st_kind = S_REG ||" ./src/ph_rpm.ml
+%endif
+
 %build
 %configure --disable-network-tests
 make -C init CC="diet gcc"
@@ -68,6 +76,9 @@ install -m 0755 %{SOURCE2} $RPM_BUILD_ROOT%{_rpmconfigdir}/
 %{_mandir}/man1/*
 
 %changelog
+* Fri Nov 18 2022 liyanan <liyanan32@h-partners.com> - 5.1.19-13
+- Replace openEuler with vendor
+
 * Wed Sep 08 2021 wangyue <wangyue92@huawei.com> - 5.1.19-12
 - Add pie and bind_now flags
 
