@@ -2,7 +2,7 @@
 
 Name:           supermin
 Version:        5.1.19
-Release:        13
+Release:        16
 Summary:        A tool for building supermin appliances, required by libguestfs
 License:        GPLv2+
 URL:            http://libguestfs.org/
@@ -11,10 +11,13 @@ Source1:        supermin.attr
 Source2:        supermin-find-requires
 Patch0001:      0001-Fix-Bytes-String-for-OCaml-4.06.patch
 Patch0002:      0002-use-installed-packages-instead-of-dnf-downloading.patch
+Patch0003:      Build-symbolic-links-correctly.patch
+Patch0004:      Expand-directory-when-adding-symlinks.patch
 Patch9000:      9000-fix-cannot-detect-package-manager.patch
 Patch9001:      add-pie-and-bind_now-flags.patch
+Patch9002:      fix-cannot-detect-package-manager-on-hce.patch
 BuildRequires:  augeas dietlibc-devel dnf dnf-plugins-core e2fsprogs-devel
-BuildRequires:  findutils gnupg2 grubby hivex kernel ocaml ocaml-findlib-devel
+BuildRequires:  findutils gnupg2 grubby hivex ocaml ocaml-findlib-devel
 BuildRequires:  rpm rpm-devel systemd-udev tar
 BuildRequires:  /usr/bin/pod2man /usr/bin/pod2html /usr/sbin/mke2fs
 Requires:       cpio dnf dnf-plugins-core e2fsprogs-libs >= 1.42 findutils
@@ -76,6 +79,15 @@ install -m 0755 %{SOURCE2} $RPM_BUILD_ROOT%{_rpmconfigdir}/
 %{_mandir}/man1/*
 
 %changelog
+* Tue Nov 15 2022 xu_ping <xuping33@h-partners.com> - 5.1.19-16
+- fix cannot detect package manager on hce
+
+* Mon Nov 14 2022 xu_ping <xuping33@h-partners.com> - 5.1.19-15
+- fix ext2: copying kernel modules error
+
+* Thu May 26 2022 Jun Yang <jun.yang@suse.com> - 5.1.19-14
+- Remove dependency of kernel package
+
 * Fri Nov 18 2022 liyanan <liyanan32@h-partners.com> - 5.1.19-13
 - Replace openEuler with vendor
 
