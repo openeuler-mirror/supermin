@@ -1,0 +1,38 @@
+From 62d5c774d6c8fcac11e28fcba99754b5478e5088 Mon Sep 17 00:00:00 2001
+From: "Richard W.M. Jones" <rjones@redhat.com>
+Date: Tue, 10 Dec 2019 18:43:00 +0000
+Subject: [PATCH] ext2: Expand directory when adding symlinks (RHBZ#1770304).
+
+This produced very weird bugs with missing symlinks under
+certain conditions, see:
+https://bugzilla.redhat.com/show_bug.cgi?id=1781803
+
+Fixes commit 487e8c964078f823646d3b0584745ab7d0ef99ca.
+---
+ src/ext2fs-c.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/src/ext2fs-c.c b/src/ext2fs-c.c
+index 8903f74..0000865 100644
+--- a/src/ext2fs-c.c
++++ b/src/ext2fs-c.c
+@@ -791,7 +791,18 @@ ext2_copy_file (struct ext2_data *data, const char *src, const char *dest)
+     if (r > statbuf.st_size)
+       r = statbuf.st_size;
+     buf[r] = '\0';
+-    ext2fs_symlink (data->fs, dir_ino, 0, basename, buf);
++  symlink_again:
++    err = ext2fs_symlink (data->fs, dir_ino, 0, basename, buf);
++    if (err) {
++      if (err == EXT2_ET_DIR_NO_SPACE) {
++	err = ext2fs_expand_dir (data->fs, dir_ino);
++	if (err)
++	  ext2_error_to_exception ("ext2fs_expand_dir", err, dirname);
++	goto symlink_again;
++      }
++      else
++	ext2_error_to_exception ("ext2fs_symlink", err, basename);
++    }
+     free (buf);
+   }
+   /* Create directory. */
