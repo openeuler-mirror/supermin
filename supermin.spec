@@ -1,6 +1,6 @@
 Name:           supermin
 Version:        5.3.2
-Release:        1
+Release:        2
 Summary:        A tool for building supermin appliances, required by libguestfs
 License:        GPLv2+
 URL:            http://libguestfs.org/
@@ -45,7 +45,7 @@ This contains man files for the using of supermin.
 
 %build
 %configure --disable-network-tests
-make -C init CC="diet gcc"
+make -C init CC="diet %toolchain"
 %make_build
 
 %install
@@ -68,6 +68,9 @@ install -m 0755 %{SOURCE2} $RPM_BUILD_ROOT%{_rpmconfigdir}/
 %{_mandir}/man1/*
 
 %changelog
+* Fri Jun 02 2023 Xiaoya Huang <huangxiaoya@iscas.ac.cn> - 5.3.2-2
+- Correct the incorrect CC compiler specified in the spec file
+
 * Thu Sep 22 2022 chendexi<chendexi@kylinos.cn> -5.3.2-1
 - Update to version 5.3.2
 
